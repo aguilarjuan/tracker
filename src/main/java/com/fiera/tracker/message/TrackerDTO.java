@@ -1,10 +1,9 @@
 package com.fiera.tracker.message;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@Data @NoArgsConstructor @ToString
+@Data @ToString
 public class TrackerDTO {
 
 private String target;
