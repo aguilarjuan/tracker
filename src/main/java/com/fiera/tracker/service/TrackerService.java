@@ -24,16 +24,16 @@ public class TrackerService {
     final static Logger log = LoggerFactory.getLogger(TrackerService.class);
 
     @Value("${tracker.leftLimit}")
-    private int leftLimit;
+    private String leftLimit;
 
     @Value("${tracker.rightLimit}")
-    private int rightLimit;
+    private String rightLimit;
 
     @Value("${tracker.targetStringLength}")
-    private int targetStringLength;
+    private String targetStringLength;
 
     @Value("${tracker.urlLink}")
-    private int urlLink;
+    private String urlLink;
 
     public TrackerDTO createTracker(String url) {
         Tracker model = trackerMapper.toModel(url,generateUrlLink());
@@ -42,8 +42,8 @@ public class TrackerService {
 
     private String generateUrlLink() {
         Random random = new Random();
-        String generatedString = random.ints(leftLimit, rightLimit + 1)
-                .limit(targetStringLength)
+        String generatedString = random.ints(Integer.parseInt(leftLimit), Integer.parseInt(rightLimit) + 1)
+                .limit(Integer.parseInt(targetStringLength))
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
         return urlLink + generatedString;
