@@ -4,8 +4,7 @@ import com.fiera.tracker.mapper.TrackerMapper;
 import com.fiera.tracker.message.TrackerDTO;
 import com.fiera.tracker.model.Tracker;
 import com.fiera.tracker.repository.TrackerRepository;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
+import com.fiera.tracker.service.impl.TrackerCreateServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-class TrackerServiceTest {
+class TrackerCreateServiceImplTest {
 
     @MockBean
     TrackerRepository repository;
@@ -24,7 +23,7 @@ class TrackerServiceTest {
     TrackerMapper trackerMapper;
 
     @Autowired
-    TrackerService trackerService;
+    TrackerCreateServiceImpl trackerCreateServiceImpl;
 
     @Test
     void createTrackerOK() {
@@ -44,7 +43,7 @@ class TrackerServiceTest {
         Mockito.when(trackerMapper.toDto(Mockito.any(Tracker.class))).thenReturn(trackerDTO);
         Mockito.when(trackerMapper.toModel(Mockito.anyString(),Mockito.anyString())).thenReturn(trackerModel);
 
-        TrackerDTO resultObtained = trackerService.createTracker(url);
+        TrackerDTO resultObtained = trackerCreateServiceImpl.createTracker(url);
 
         assertNotNull(resultObtained);
     }
