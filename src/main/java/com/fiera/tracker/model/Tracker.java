@@ -2,6 +2,7 @@ package com.fiera.tracker.model;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
@@ -13,4 +14,11 @@ public class Tracker {
     private String target;
     private String link;
     private boolean valid;
+    @DBRef
+    private TrackerStatistics trackerStatistics;
+    @DBRef
+    private TrackerSecurity trackerSecurity;
+
+
+
 }

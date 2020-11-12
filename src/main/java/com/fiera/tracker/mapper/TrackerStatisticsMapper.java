@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class TrackerStatisticsMapper {
 
-    public TrackerStatistics toModel(Tracker tracker){
+    public TrackerStatistics toModel(Tracker trackerModel){
         TrackerStatistics trackerStatistics = new TrackerStatistics();
-        trackerStatistics.setTracker(tracker);
+        trackerStatistics.setTracker(trackerModel);
         trackerStatistics.setConnections(0);
         return trackerStatistics;
     }

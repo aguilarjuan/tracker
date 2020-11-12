@@ -20,16 +20,18 @@ public class TrackerCreateProxy implements TrackerCreateService {
 
     @Autowired
     @Qualifier("trackerCreateServiceImpl")
-    private TrackerCreateService trackerCreateService;
+    private TrackerCreateServiceImpl TrackerCreateServiceImpl;
+
+
 
     @Override
-    public Tracker createTracker(String url) {
-     Tracker trackerModel = trackerCreateService.createTracker(url);
+    public Tracker createTracker(String url, String password, String expirationDate) {
+     Tracker trackerModel = TrackerCreateServiceImpl.createTracker(url,password,expirationDate);
         createTrackerStatistics(trackerModel);
         return trackerModel;
     }
 
-    private void createTrackerStatistics(Tracker tracker){
-        trackerStatisticsRepository.save(trackerStatisticsMapper.toModel(tracker));
+    private void createTrackerStatistics(Tracker trackerModel){
+        trackerStatisticsRepository.save(trackerStatisticsMapper.toModel(trackerModel));
     }
 }

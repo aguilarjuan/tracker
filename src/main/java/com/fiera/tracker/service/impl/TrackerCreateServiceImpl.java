@@ -1,9 +1,10 @@
 package com.fiera.tracker.service.impl;
 
 import com.fiera.tracker.mapper.TrackerMapper;
-import com.fiera.tracker.message.TrackerDTO;
+import com.fiera.tracker.mapper.TrackerSecurityMapper;
 import com.fiera.tracker.model.Tracker;
 import com.fiera.tracker.repository.TrackerRepository;
+import com.fiera.tracker.repository.TrackerSecurityRepository;
 import com.fiera.tracker.service.TrackerCreateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +23,13 @@ public class TrackerCreateServiceImpl implements TrackerCreateService {
     private TrackerRepository trackerRepository;
 
     @Autowired
+    private TrackerSecurityRepository trackerSecurityRepository;
+
+    @Autowired
     private TrackerMapper trackerMapper;
+
+    @Autowired
+    private TrackerSecurityMapper trackerSecurityMapper;
 
     final static Logger log = LoggerFactory.getLogger(TrackerCreateServiceImpl.class);
 
@@ -39,9 +46,17 @@ public class TrackerCreateServiceImpl implements TrackerCreateService {
     private String urlLink;
 
     @Override
-    public Tracker createTracker(String url) {
+    public Tracker createTracker(String url, String password, String expirationDate) {
         Tracker model = trackerMapper.toModel(url,generateUrlLink());
-        return trackerRepository.save(model);
+        trackerRepository.save(model);
+        addSecurity(password,expirationDate,model);
+        return model;
+    }
+
+    private void addSecurity(String password, String expirationDate, Tracker model){
+        if((password != null && !password.isEmpty()) || expirationDate != null && !expirationDate.isEmpty()){
+            trackerSecurityRepository.save(trackerSecurityMapper.toModel(password,expirationDate,model));
+        }
     }
 
     private String generateUrlLink() {

@@ -23,7 +23,7 @@ import static com.fiera.tracker.constans.Messages.FORMAT_BAD_URL;
 public class RedirectController {
 
     @Autowired
-    @Qualifier("redirectServiceProxy")
+    @Qualifier("trackerRedirectProxy")
     private TrackerRedirectService trackerRedirectService;
 
     final static String REGEX = "/l/";
