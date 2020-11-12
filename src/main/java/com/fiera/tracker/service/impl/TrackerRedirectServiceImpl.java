@@ -1,5 +1,6 @@
 package com.fiera.tracker.service.impl;
 
+import com.fiera.tracker.model.Tracker;
 import com.fiera.tracker.service.TrackerRedirectService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +14,9 @@ import java.util.Optional;
 public class TrackerRedirectServiceImpl implements TrackerRedirectService {
 
     @Override
-    public Optional<String> getUrl(String link) {
+    public String getUrl(Tracker TrackerModel) {
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> response = restTemplate.getForEntity(link , String.class);
-        return Optional.ofNullable(response.getBody());
+        ResponseEntity<String> response = restTemplate.getForEntity(TrackerModel.getTarget() , String.class);
+        return response.getBody();
     }
 }

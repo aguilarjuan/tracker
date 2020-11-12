@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,17 +30,10 @@ public class TrackerRedirectProxy implements TrackerRedirectService {
     private TrackerStatisticsRepository trackerStatisticsRepository;
 
     @Override
-    public Optional<String> getUrl(String link) {
-        String url = urlLink + link;
-        List<Tracker> trackerList = trackerRepository.findByLink(url);
-        if(trackerList != null && !trackerList.isEmpty()){
-            Tracker TrackerModel = trackerList.get(0);
-            Optional<String> response = trackerRedirectServiceImpl.getUrl(url);
+    public String getUrl(Tracker TrackerModel) {
+            String response = trackerRedirectServiceImpl.getUrl(TrackerModel);
             updateDataStatistics(TrackerModel);
             return response;
-        } else {
-            return Optional.empty();
-        }
     }
 
     private void updateDataStatistics(Tracker trackerModel){

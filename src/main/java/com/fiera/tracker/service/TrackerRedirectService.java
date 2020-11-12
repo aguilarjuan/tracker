@@ -1,9 +1,11 @@
 package com.fiera.tracker.service;
 
+import com.fiera.tracker.model.Tracker;
+
 import java.util.Optional;
 
 public interface TrackerRedirectService {
 
-    Optional<String> getUrl(String link);
+    String getUrl(Tracker TrackerModel);
 
 }
