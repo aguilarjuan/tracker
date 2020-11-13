@@ -11,5 +11,4 @@ public class TrackerStatistics {
     @Id
     private String id;
     private Integer connections;
-    private Tracker tracker;
 }

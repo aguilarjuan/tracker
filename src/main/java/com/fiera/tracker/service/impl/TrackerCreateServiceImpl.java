@@ -3,6 +3,7 @@ package com.fiera.tracker.service.impl;
 import com.fiera.tracker.mapper.TrackerMapper;
 import com.fiera.tracker.mapper.TrackerSecurityMapper;
 import com.fiera.tracker.model.Tracker;
+import com.fiera.tracker.model.TrackerSecurity;
 import com.fiera.tracker.repository.TrackerRepository;
 import com.fiera.tracker.repository.TrackerSecurityRepository;
 import com.fiera.tracker.service.TrackerCreateService;
@@ -47,15 +48,18 @@ public class TrackerCreateServiceImpl implements TrackerCreateService {
 
     @Override
     public Tracker createTracker(String url, String password, String expirationDate) {
+        TrackerSecurity trackerSecurity = addSecurity(password,expirationDate);
         Tracker model = trackerMapper.toModel(url,generateUrlLink());
+        model.setTrackerSecurity(trackerSecurity);
         trackerRepository.save(model);
-        addSecurity(password,expirationDate,model);
         return model;
     }
 
-    private void addSecurity(String password, String expirationDate, Tracker model){
+    private TrackerSecurity addSecurity(String password, String expirationDate){
         if((password != null && !password.isEmpty()) || expirationDate != null && !expirationDate.isEmpty()){
-            trackerSecurityRepository.save(trackerSecurityMapper.toModel(password,expirationDate,model));
+           return trackerSecurityRepository.save(trackerSecurityMapper.toModel(password,expirationDate));
+        } else {
+            return null;
         }
     }
 

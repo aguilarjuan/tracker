@@ -7,5 +7,5 @@ import lombok.ToString;
 @ToString
 public class TrackerStatisticsDTO {
 
-    private int quantityRedirect;
+    private int amountRedirect;
 }

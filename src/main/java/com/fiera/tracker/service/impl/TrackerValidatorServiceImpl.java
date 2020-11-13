@@ -4,6 +4,7 @@ import com.fiera.tracker.model.Tracker;
 import com.fiera.tracker.model.TrackerSecurity;
 import com.fiera.tracker.repository.TrackerRepository;
 import com.fiera.tracker.repository.TrackerSecurityRepository;
+import com.fiera.tracker.service.TrackerValidatorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class TrackerValidatorService {
+public class TrackerValidatorServiceImpl implements TrackerValidatorService {
 
     @Autowired
     private TrackerRepository trackerRepository;
@@ -31,6 +32,7 @@ public class TrackerValidatorService {
         return url.matches(pattern);
     }
 
+    @Override
     public boolean invalidateLink(String link){
         Optional<Tracker> trackerOptional = getTrackerModel(link);
         if(trackerOptional.isPresent()){
@@ -43,18 +45,15 @@ public class TrackerValidatorService {
         }
     }
 
-    public boolean allowAccess(Tracker tracker, String password, String expirationDate){
+    @Override
+    public boolean allowAccess(Tracker tracker, String password){
         Optional<TrackerSecurity> securityOptional = trackerSecurityRepository.findById(tracker.getTrackerSecurity().getId());
-        if(securityOptional.isPresent()){
-            TrackerSecurity security = securityOptional.get();
-            return validatePassword(password,security) || validateExpirationDate(expirationDate,security);
-        } else {
-            return true;
-        }
+        return securityOptional.get().getPassword().equals(password) && validateExpirationDate(securityOptional.get());
     }
 
+    @Override
     public Optional<Tracker> getTrackerModel(String link){
-        List<Tracker> trackerList = trackerRepository.findByLink(link);
+        List<Tracker> trackerList = trackerRepository.findByValidIsTrueAndLink(link);
         if(trackerList != null && !trackerList.isEmpty()){
             return Optional.of(trackerList.get(0));
         } else {
@@ -62,21 +61,11 @@ public class TrackerValidatorService {
         }
     }
 
-    private boolean validatePassword(String password,TrackerSecurity trackerSecurity){
-        if(password != null && trackerSecurity.getPassword() != null){
-            return trackerSecurity.equals(password);
-        } else {
-            return false;
-        }
-    }
-
-    private boolean validateExpirationDate(String expirationDate, TrackerSecurity trackerSecurity){
-       if(expirationDate != null && trackerSecurity.getExpirationDate() != null ){
-          LocalDate expirationDateFormat =  LocalDate.parse(expirationDate, formatter);
-          return !expirationDateFormat.isBefore(LocalDate.now());
+    private boolean validateExpirationDate(TrackerSecurity trackerSecurity){
+       if(trackerSecurity.getExpirationDate() != null ){
+          return LocalDate.now().isBefore(trackerSecurity.getExpirationDate());
        } else {
-           return false;
+           return true;
        }
     }
-
 }

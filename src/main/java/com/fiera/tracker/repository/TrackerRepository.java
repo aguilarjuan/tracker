@@ -8,6 +8,5 @@ import java.util.List;
 
 @Repository
 public interface TrackerRepository extends MongoRepository<Tracker, String> {
-
-    List<Tracker> findByLink(String link);
+    List<Tracker> findByValidIsTrueAndLink(String link);
 }

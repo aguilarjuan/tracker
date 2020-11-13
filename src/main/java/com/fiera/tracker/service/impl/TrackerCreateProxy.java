@@ -2,6 +2,8 @@ package com.fiera.tracker.service.impl;
 
 import com.fiera.tracker.mapper.TrackerStatisticsMapper;
 import com.fiera.tracker.model.Tracker;
+import com.fiera.tracker.model.TrackerStatistics;
+import com.fiera.tracker.repository.TrackerRepository;
 import com.fiera.tracker.repository.TrackerStatisticsRepository;
 import com.fiera.tracker.service.TrackerCreateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,9 @@ public class TrackerCreateProxy implements TrackerCreateService {
     private TrackerStatisticsRepository trackerStatisticsRepository;
 
     @Autowired
+    private TrackerRepository trackerRepository;
+
+    @Autowired
     private TrackerStatisticsMapper trackerStatisticsMapper;
 
     @Autowired
@@ -26,12 +31,14 @@ public class TrackerCreateProxy implements TrackerCreateService {
 
     @Override
     public Tracker createTracker(String url, String password, String expirationDate) {
-     Tracker trackerModel = TrackerCreateServiceImpl.createTracker(url,password,expirationDate);
+        Tracker trackerModel = TrackerCreateServiceImpl.createTracker(url,password,expirationDate);
         createTrackerStatistics(trackerModel);
         return trackerModel;
     }
 
     private void createTrackerStatistics(Tracker trackerModel){
-        trackerStatisticsRepository.save(trackerStatisticsMapper.toModel(trackerModel));
+        TrackerStatistics trackerStatistics =  trackerStatisticsRepository.save(trackerStatisticsMapper.toModel());
+        trackerModel.setTrackerStatistics(trackerStatistics);
+        trackerRepository.save(trackerModel);
     }
 }

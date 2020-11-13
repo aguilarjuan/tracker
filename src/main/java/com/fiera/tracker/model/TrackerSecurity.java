@@ -14,6 +14,5 @@ public class TrackerSecurity {
     private String id;
     private String password;
     private LocalDate expirationDate;
-    private Tracker tracker;
 
 }

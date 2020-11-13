@@ -2,7 +2,7 @@ package com.fiera.tracker.controller;
 
 import com.fiera.tracker.model.Tracker;
 import com.fiera.tracker.service.TrackerRedirectService;
-import com.fiera.tracker.service.impl.TrackerValidatorService;
+import com.fiera.tracker.service.impl.TrackerValidatorServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ import java.util.Optional;
 import static com.fiera.tracker.constans.Messages.*;
 
 @RestController
-@RequestMapping("/l/")
+@RequestMapping("/l")
 public class TrackerRedirectController {
 
     @Autowired
@@ -30,7 +30,7 @@ public class TrackerRedirectController {
     private TrackerRedirectService trackerRedirectService;
 
     @Autowired
-    private TrackerValidatorService trackerValidatorService;
+    private TrackerValidatorServiceImpl trackerValidatorServiceImpl;
 
     @Value("${tracker.urlLink}")
     private String urlLink;
@@ -39,16 +39,16 @@ public class TrackerRedirectController {
 
     final static Logger log = LoggerFactory.getLogger(TrackerRedirectController.class);
 
-    @GetMapping( value = "*")
-    ResponseEntity<?> redirectTracker(HttpServletRequest httpServletRequest, @RequestParam String password, @RequestParam String expirationDate){
+    @GetMapping( value = "/*")
+    ResponseEntity<?> redirectTracker(HttpServletRequest httpServletRequest, @RequestParam String password){
         String[] arrOfStr = httpServletRequest.getServletPath().split(REGEX);
-        Optional<Tracker> trackerOptional = trackerValidatorService.getTrackerModel(urlLink + arrOfStr[1]);
+        Optional<Tracker> trackerOptional = trackerValidatorServiceImpl.getTrackerModel(urlLink + arrOfStr[1]);
         if(trackerOptional.isPresent()){
-            if(trackerValidatorService.allowAccess(trackerOptional.get(),password,expirationDate)){
+            if(trackerValidatorServiceImpl.allowAccess(trackerOptional.get(),password)){
                 String urlTarget = trackerRedirectService.getUrl(trackerOptional.get());
                 return new ResponseEntity<>(urlTarget, HttpStatus.OK);
             } else {
-                return new ResponseEntity<>(AUTHENTICATION_REQUIRED, HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>(AUTHENTICATION_FAILED, HttpStatus.NOT_FOUND);
             }
         } else {
             return new ResponseEntity<>(LINK_NOT_FOUND, HttpStatus.NOT_FOUND);
