@@ -1,0 +1,146 @@
+{
+	"info": {
+		"_postman_id": "a724f77b-0b34-47c0-bd20-16f469be2b68",
+		"name": "fiera-tracker",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "tracker_create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "url",
+							"value": "https://www.cronista.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "text"
+						},
+						{
+							"key": "expirationDate",
+							"value": "12/11/2020",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/tracker/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tracker",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "tracker_redirect",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/l/dzjeexwtdk?password=admin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"l",
+						"dzjeexwtdk"
+					],
+					"query": [
+						{
+							"key": "lin",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "password",
+							"value": "admin"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "tracker_statistics",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/tracker/statistics/redirect?link=http://localhost:8080/l/jsewptmrik",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tracker",
+						"statistics",
+						"redirect"
+					],
+					"query": [
+						{
+							"key": "link",
+							"value": "http://localhost:8080/l/jsewptmrik"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "tracker_invalidate",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "link",
+							"value": "http://localhost:8080/l/jsewptmrik",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/tracker/invalidate/link",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"tracker",
+						"invalidate",
+						"link"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
